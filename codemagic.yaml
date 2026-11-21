@@ -1,0 +1,18 @@
+workflows:
+  android-apk:
+    name: arvirmdnid APK
+    instance_type: linux_x2
+    max_build_duration: 30
+    environment:
+      flutter: stable
+    scripts:
+      - name: Generate android project
+        script: flutter create . --platforms=android --project-name arvirmdnid --org id.arvirmdnid
+      - name: Set app name
+        script: sed -i 's/android:label="[^"]*"/android:label="arvirmdnid"/' android/app/src/main/AndroidManifest.xml
+      - name: Get packages
+        script: flutter pub get
+      - name: Build APK
+        script: flutter build apk --release
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
